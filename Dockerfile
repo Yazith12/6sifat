@@ -63,7 +63,9 @@ RUN apt-get update && apt-get install -y nginx
 
 # Configure Nginx
 COPY nginx.conf /etc/nginx/sites-available/default
-RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/8.2/fpm/php.ini
+
+# FIX: Correct path to php.ini
+RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /usr/local/etc/php/php.ini
 
 # Start command with proper PORT handling
 EXPOSE 8000
