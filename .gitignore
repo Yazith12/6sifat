@@ -1,3 +1,4 @@
+# Vendor and dependencies
 /vendor/
 node_modules/
 npm-debug.log
@@ -15,20 +16,19 @@ public/hot
 public_html/storage
 public_html/hot
 
+# Sensitive and generated files
 storage/*.key
 .env
+.env.backup
+.env.production
 Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
 
+# Build and cache files
 /public/build
 /storage/pail
-.env.backup
-.env.production
-.phpactor.json
-<<<<<<< HEAD
-auth.json
-=======
-auth.json
->>>>>>> 52c069168d9939be37117573d321cc0c20645629
+
+# Logs
+storage/logs/*.log
