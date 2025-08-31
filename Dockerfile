@@ -1,4 +1,4 @@
-# Use official PHP image with Apache
+# Use PHP 8.2 with Apache
 FROM php:8.2-apache
 
 # Install system dependencies
@@ -32,8 +32,5 @@ RUN composer dump-autoload
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose the port Render expects
-EXPOSE 8000
-
-# Start command - Render will use $PORT automatically
-CMD ["php", "-S", "0.0.0.0:$PORT", "-t", "public"]
+# Correct command that properly expands $PORT
+CMD ["sh", "-c", "php -S 0.0.0.0:$PORT -t public"]
