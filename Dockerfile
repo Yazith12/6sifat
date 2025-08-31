@@ -1,7 +1,7 @@
 # Use PHP 8.2 with Apache
 FROM php:8.2-apache
 
-# Install system dependencies
+# Install system dependencies including MySQL extension
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    && docker-php-ext-install pdo mbstring exif pcntl bcmath gd zip \
+    default-mysql-client \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -32,5 +33,5 @@ RUN composer dump-autoload
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Correct command that properly expands $PORT
+# Start command with proper PORT handling
 CMD ["sh", "-c", "php -S 0.0.0.0:$PORT -t public"]
