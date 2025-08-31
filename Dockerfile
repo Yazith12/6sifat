@@ -1,4 +1,4 @@
-# Use official PHP 8.2 FPM image (better for Laravel than apache)
+# Use official PHP 8.2 FPM image
 FROM php:8.2-fpm
 
 # Set environment variables
@@ -23,10 +23,7 @@ RUN apt-get update && apt-get install -y \
     libxpm-dev \
     libvpx-dev \
     libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /var/lib/dpkg/* /var/cache/apt/*
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd \
@@ -58,19 +55,13 @@ RUN mkdir -p /var/www/html/bootstrap/cache /var/www/html/storage
 RUN chmod -R 775 /var/www/html/bootstrap/cache /var/www/html/storage
 RUN chown -R www-data:www-data /var/www/html/bootstrap/cache /var/www/html/storage
 
-# Install and configure PHP-FPM with Nginx
+# Install Nginx
 RUN apt-get update && apt-get install -y nginx
 
 # Configure Nginx
 COPY nginx.conf /etc/nginx/sites-available/default
 
-# FIX: Correct path to php.ini
-RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /usr/local/etc/php/php.ini
-
-# Start command with proper PORT handling
-EXPOSE 8000
-
-# Set up entrypoint script to handle environment variables properly
+# Create entrypoint script
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]

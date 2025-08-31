@@ -12,12 +12,11 @@ if [ "$APP_ENV" = "production" ] && [ "$RUN_MIGRATIONS" = "true" ]; then
     php artisan migrate --force
 fi
 
+# Start Nginx in background
+nginx -g "daemon off;" &
+
 # Start PHP-FPM
 if [ "$1" = 'php-fpm' ]; then
-    # Start Nginx in background
-    nginx -g "daemon off;" &
-    
-    # Start PHP-FPM
     exec "$@"
 fi
 
