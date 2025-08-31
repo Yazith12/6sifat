@@ -1,7 +1,10 @@
-# Use official PHP 8.2 image with Apache
+# Use official PHP 8.2 image
 FROM php:8.2-apache
 
-# Install system dependencies including PostgreSQL client
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -12,8 +15,13 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    && docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd zip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    libjpeg-dev \
+    libfreetype6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) pdo_pgsql mbstring exif pcntl bcmath zip gd
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -21,7 +29,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy only composer files first for better caching
+# Copy composer files first for better caching
 COPY composer.json composer.lock ./
 
 # Install PHP dependencies
@@ -36,15 +44,15 @@ RUN composer dump-autoload
 # Install all dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 storage bootstrap/cache
-
 # Configure Apache to serve from public directory
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
 # Enable mod_rewrite for Laravel
 RUN a2enmod rewrite
 
-# Proper command that expands $PORT environment variable
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 storage bootstrap/cache
+
+# Start command with proper PORT handling
 CMD ["sh", "-c", "php -S 0.0.0.0:$PORT -t public"]
