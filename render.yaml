@@ -16,7 +16,9 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://yazithsafi.onrender.com
+        value: https://6sifat.onrender.com
+      - key: DB_CONNECTION
+        value: mysql
       - key: DB_DATABASE
         value: apps
       - key: DB_USERNAME
