@@ -1,7 +1,7 @@
 # Use official PHP 8.2 image with Apache
 FROM php:8.2-apache
 
-# Install system dependencies
+# Install system dependencies including PostgreSQL client
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -12,8 +12,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    default-mysql-client \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
