@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: yazithsafi
+    plan: free
+    runtime: php
+    region: oregon
+    env: production
+    buildCommand: "composer install"
+    startCommand: "php -S 0.0.0.0:$PORT -t public"
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://yazithsafi.onrender.com
