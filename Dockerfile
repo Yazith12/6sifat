@@ -15,12 +15,13 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    libjpeg-dev \
     libfreetype6-dev \
+    libjpeg-dev \
+    libpng-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+# Install PHP extensions (fixed GD configuration)
+RUN docker-php-ext-configure gd \
     && docker-php-ext-install -j$(nproc) pdo_pgsql mbstring exif pcntl bcmath zip gd
 
 # Install Composer
