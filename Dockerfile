@@ -65,3 +65,6 @@ COPY nginx.conf /etc/nginx/sites-available/default
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
+
+# Configure PHP-FPM to listen on TCP
+RUN sed -i 's/listen = \/var\/run\/php\/php8.2-fpm.sock/listen = 127.0.0.1:9000/' /usr/local/etc/php-fpm.d/www.conf
