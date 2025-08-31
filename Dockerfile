@@ -1,8 +1,9 @@
-# Use official PHP 8.2 image
-FROM php:8.2-apache
+# Use official PHP 8.2 FPM image (better for Laravel than apache)
+FROM php:8.2-fpm
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,11 +17,18 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     libfreetype6-dev \
-    libjpeg-dev \
+    libjpeg62-turbo-dev \
     libpng-dev \
+    libwebp-dev \
+    libxpm-dev \
+    libvpx-dev \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions (fixed GD configuration)
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install PHP extensions
 RUN docker-php-ext-configure gd \
     && docker-php-ext-install -j$(nproc) pdo_pgsql mbstring exif pcntl bcmath zip gd
 
@@ -45,15 +53,22 @@ RUN composer dump-autoload
 # Install all dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Configure Apache to serve from public directory
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# Create directory for session and cache files
+RUN mkdir -p /var/www/html/bootstrap/cache /var/www/html/storage
+RUN chmod -R 775 /var/www/html/bootstrap/cache /var/www/html/storage
+RUN chown -R www-data:www-data /var/www/html/bootstrap/cache /var/www/html/storage
 
-# Enable mod_rewrite for Laravel
-RUN a2enmod rewrite
+# Install and configure PHP-FPM with Nginx
+RUN apt-get update && apt-get install -y nginx
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 storage bootstrap/cache
+# Configure Nginx
+COPY nginx.conf /etc/nginx/sites-available/default
+RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/8.2/fpm/php.ini
 
 # Start command with proper PORT handling
-CMD ["sh", "-c", "php -S 0.0.0.0:$PORT -t public"]
+EXPOSE 8000
+
+# Set up entrypoint script to handle environment variables properly
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
