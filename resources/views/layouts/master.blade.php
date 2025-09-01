@@ -18,7 +18,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <!-- Inline Styles (only for blog post layout) -->
+    <!-- Inline Styles -->
     <style>
         /* Base styles */
         body {
@@ -38,6 +38,42 @@
         
         footer {
             margin-block-start: auto;
+        }
+
+        /* Video background container - ensure it's positioned correctly */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Content with transparent background */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+        }
+        
+        /* Make sure your content containers have transparent backgrounds */
+        .container, .row, .col {
+            background-color: transparent !important;
         }
 
         /* Image and overlay styles */
@@ -153,13 +189,24 @@
     </style>
 </head>
 <body class="@yield('body-class')">
-    @include('layouts.includes.header')
+    <!-- Add the video background container -->
+    <div class="video-background">
+        <video autoplay loop muted playsinline class="background-video">
+            <source src="https://res.cloudinary.com/ddhaiaedw/video/upload/v1756523994/9318020-uhd_2560_1440_24fps_qwdwiv.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
-    <main class="flex-grow-1">
-        @yield('content')
-    </main>
+    <!-- Wrap content to ensure it appears above the video -->
+    <div class="content-wrapper">
+        @include('layouts.includes.header')
 
-    @include('layouts.includes.footer')
+        <main class="flex-grow-1">
+            @yield('content')
+        </main>
+
+        @include('layouts.includes.footer')
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
