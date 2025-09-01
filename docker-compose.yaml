@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=pgdb
+      - DB_HOST=db.mqhpdxhgsbatuvvfsbin.supabase.co
     networks:
       - application
     entrypoint: ['/bin/sh', '-c']
