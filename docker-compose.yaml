@@ -15,7 +15,8 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=db.mqhpdxhgsbatuvvfsbin.supabase.co
+      - DB_HOST=dpg-d2q730je5dus73bnvtog-a.singapore-postgres.render.com
+      - DB_PORT=5432
     networks:
       - application
     entrypoint: ['/bin/sh', '-c']
@@ -31,9 +32,9 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Haaland@9
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=db_6sifat_user
+      - POSTGRES_PASSWORD=FeE5JAbGBbk3tQhoW9e0dh2hY0YpX6Zf
+      - POSTGRES_DB=db_6sifat
     networks:
       - application
     container_name: mypgdb
