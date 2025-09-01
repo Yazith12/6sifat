@@ -65,7 +65,7 @@
                 <h1 class="error-number">404</h1>
                 <h2 class="fw-bold mb-3">Oops! Page Not Found</h2>
                 <p class="fs-5 text-muted mb-4">The page you're looking for doesn't exist or has been moved.</p>
-                <a href="/10" class="btn btn-home btn-lg">
+                <a href="/" class="btn btn-home btn-lg">
                     <i class="bi bi-house-door me-2"></i>Back to Homepage
                 </a>
             </div>

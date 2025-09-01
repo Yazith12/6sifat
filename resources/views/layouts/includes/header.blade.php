@@ -6,7 +6,7 @@
             </div>
             <div class="col-md-9">
                 <nav class="d-flex justify-content-center justify-content-md-end gap-3">
-                    <a href="{{ url('/10') }}" class="text-decoration-none text-white hover-effect">Home</a>
+                    <a href="{{ url('/') }}" class="text-decoration-none text-white hover-effect">Home</a>
                     <a href="#" class="text-decoration-none text-white hover-effect">About</a>
                     <a href="{{ url('/contact') }}" class="text-decoration-none text-white hover-effect">Contact</a>
                 </nav>
