@@ -18,9 +18,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <!-- Inline Styles -->
     <style>
-        /* Base styles */
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -34,25 +33,15 @@
             color: #333;
         }
 
-       body {
+        body {
             display: flex;
             flex-direction: column;
-            min-block-size: 100vh;
+            min-height: 100vh;
             margin: 0;
-            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
             position: relative;
         }
 
-        /* Layout */
-        main {
-            flex: 1 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Video background container */
+        /* Video background - must be behind everything */
         .video-background {
             position: fixed;
             top: 0;
@@ -60,7 +49,7 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            z-index: -1; /* This ensures it's in the background */
+            z-index: -1; /* Critical: background layer */
         }
 
         .video-background video {
@@ -74,6 +63,19 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
         }
+
+        /* Header and footer must be above video */
+        header, footer {
+            position: relative;
+            z-index: 1000; /* Ensures they appear above video */
+            background-color: rgba(0, 0, 0, 1) !important;
+        }
+
+        main {
+            flex: 1 0 auto;
+            position: relative;
+            z-index: 1;
+        }
         
         /* Content wrapper */
         .content-wrapper {
@@ -82,7 +84,7 @@
             flex: 1 0 auto;
         }
         
-        /* Make sure your content containers have transparent backgrounds */
+        /* Ensure transparency */
         .container, .row, .col {
             background-color: transparent !important;
         }
@@ -197,23 +199,10 @@
         .post-image-container:hover .post-overlay {
             opacity: 0.7;
         }
-
-        /* Sticky footer */
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            left: 0;
-            background: #000000ff; 
-            color: #f5f5dc; 
-            border-block-start: 1px solid #000000ff;
-            font-family: Georgia, 'Times New Roman', serif;
-            padding: 15px 0;
-        }
     </style>
 </head>
 <body class="@yield('body-class')">
-    <!-- Add the video background container -->
+    <!-- Background Video -->
     <div class="video-background">
         <video autoplay loop muted playsinline class="background-video">
             <source src="https://res.cloudinary.com/ddhaiaedw/video/upload/v1756523994/9318020-uhd_2560_1440_24fps_qwdwiv.mp4" type="video/mp4">
@@ -221,8 +210,8 @@
         </video>
     </div>
 
-    <!-- Wrap content to ensure it appears above the video -->
-   <div class="content-wrapper">
+    <!-- Content -->
+    <div class="content-wrapper">
         @include('layouts.includes.header')
 
         <main class="flex-grow-1">
