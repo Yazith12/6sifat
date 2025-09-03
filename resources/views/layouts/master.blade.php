@@ -34,10 +34,15 @@
             color: #333;
         }
 
-        body {
+       body {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            min-block-size: 100vh;
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            position: relative;
         }
 
         /* Layout */
@@ -55,7 +60,7 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            z-index: -1;
+            z-index: -1; /* This ensures it's in the background */
         }
 
         .video-background video {
@@ -69,12 +74,12 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
         }
-
+        
         /* Content wrapper */
         .content-wrapper {
             position: relative;
             z-index: 1;
-            background-color: rgba(255, 255, 255, 0.1);
+            flex: 1 0 auto;
         }
         
         /* Make sure your content containers have transparent backgrounds */
@@ -226,7 +231,7 @@
 
         @include('layouts.includes.footer')
     </div>
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
