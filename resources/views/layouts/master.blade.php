@@ -49,7 +49,7 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            z-index: -1; /* Critical: background layer */
+            z-index: -1;
         }
 
         .video-background video {
@@ -67,7 +67,7 @@
         /* Header and footer must be above video */
         header, footer {
             position: relative;
-            z-index: 1000; /* Ensures they appear above video */
+            z-index: 1000;
             background-color: rgba(0, 0, 0, 1) !important;
         }
 
@@ -75,13 +75,6 @@
             flex: 1 0 auto;
             position: relative;
             z-index: 1;
-        }
-        
-        /* Content wrapper */
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-            flex: 1 0 auto;
         }
         
         /* Ensure transparency */
@@ -210,31 +203,12 @@
         </video>
     </div>
 
-    <!-- Content -->
-    <div class="content-wrapper">
-        @include('layouts.includes.header')
+    @include('layouts.includes.header')
 
-        <main class="flex-grow-1">
-            @yield('content')
-        </main>
+    <main class="flex-grow-1">
+        @yield('content')
+    </main>
 
-        @include('layouts.includes.footer')
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom JS -->
-    <script>
-        function removeOverlay(element) {
-            const overlay = element.querySelector('.post-overlay');
-            if (overlay) overlay.style.opacity = '0';
-        }
-        
-        function restoreOverlay(element) {
-            const overlay = element.querySelector('.post-overlay');
-            if (overlay) overlay.style.opacity = '1';
-        }
-    </script>
+    @include('layouts.includes.footer')
 </body>
 </html>

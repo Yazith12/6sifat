@@ -37,5 +37,5 @@ main {
 header, footer {
     position: relative;
     z-index: 1000; /* Ensure they appear above the video */
-    background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent background */
+    background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent background */
 }
