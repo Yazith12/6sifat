@@ -1,10 +1,17 @@
-body.contact-page {
-    background-image: url('https://res.cloudinary.com/ddhaiaedw/image/upload/v1756530547/firdouss-ross-wpmAydh_efA-unsplash_fltht5.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    min-height: 100vh;
+/* Base layout */
+html, body {
+    height: 100%;
+    margin: 0;
 }
+
+/* Main content area */
+main {
+    position: relative;
+    min-height: calc(100vh - 60px);
+    margin-bottom: 60px; /* Height of your footer */
+}
+
+/* Video background */
 .video-background {
     position: fixed;
     top: 0;
@@ -21,16 +28,14 @@ body.contact-page {
     width: auto;
     height: auto;
     position: absolute;
-    p.text-muted {
-        color: #00698f;
-    }
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     object-fit: cover;
 }
-.custom-post-text {
-    color: #2c3e50 !important; /* Dark blue-gray — change this to your color */
-    font-size: 1.125rem;
-    line-height: 1.6;
+
+header, footer {
+    position: relative;
+    z-index: 1000; /* Ensure they appear above the video */
+    background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent background */
 }

@@ -21,26 +21,33 @@
     <!-- Inline Styles -->
     <style>
         /* Base styles */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-block-size: 100vh;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
             font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             color: #333;
         }
 
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
         /* Layout */
         main {
             flex: 1 0 auto;
+            position: relative;
+            z-index: 1;
         }
         
-        footer {
-            margin-block-start: auto;
-        }
-
-        /* Video background container - ensure it's positioned correctly */
+        /* Video background container */
         .video-background {
             position: fixed;
             top: 0;
@@ -63,12 +70,11 @@
             object-fit: cover;
         }
 
-        /* Content with transparent background */
+        /* Content wrapper */
         .content-wrapper {
             position: relative;
             z-index: 1;
-            background-color: rgba(255, 255, 255, 0.9);
-            min-height: 100vh;
+            background-color: rgba(255, 255, 255, 0.1);
         }
         
         /* Make sure your content containers have transparent backgrounds */
@@ -186,6 +192,19 @@
         .post-image-container:hover .post-overlay {
             opacity: 0.7;
         }
+
+        /* Sticky footer */
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+            background: #000000ff; 
+            color: #f5f5dc; 
+            border-block-start: 1px solid #000000ff;
+            font-family: Georgia, 'Times New Roman', serif;
+            padding: 15px 0;
+        }
     </style>
 </head>
 <body class="@yield('body-class')">
@@ -198,7 +217,7 @@
     </div>
 
     <!-- Wrap content to ensure it appears above the video -->
-    <div class="content-wrapper">
+   <div class="content-wrapper">
         @include('layouts.includes.header')
 
         <main class="flex-grow-1">
@@ -207,7 +226,7 @@
 
         @include('layouts.includes.footer')
     </div>
-
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
